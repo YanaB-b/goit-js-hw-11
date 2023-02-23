@@ -17,19 +17,26 @@ const options = {
 export default class GalleryApiService{
     constructor(){
         this.page = 1;
-        this.searchQueryPage = '';
+        this.q = '';
         this.perPage = options.parametry.page_per;
 
     }
    async getImages(){
     try {
-        const endpoint = await axios.get(
-            `${URL}?q=${this.searchQuery}7&page=${this.page}`,
+        const response = await axios.get(
+            `${URL}?q=${this.q}&page=${this.page}`,
             options
         );
-        
+        console.log(response.data);
+
+        if (!response.data.totalHits) {
+            throw new Error(response.status);
+        }
+    this.nextPage();
+        return response.data;
+
     } catch (error) {
-       return error 
+       return error; 
     }
 }
     nextPage() {

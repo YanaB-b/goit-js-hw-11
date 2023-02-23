@@ -5,18 +5,21 @@ import Notiflix from "notiflix";
 import GalleryApiService from "./NewsApiService";
 import LoadMoreBtn from "./components/loadMoreBtn";
 
-const form = document.querySelector(".search-form");
-const gallery = document.querySelector(".gallery");
+const ref = {
+  form: document.querySelector(".search-form"),
+  gallery: document.querySelector(".gallery"),
 
+} 
+ 
 
-const lightbox = new SimpleLightbox('.gallery a')
+const lightbox = new SimpleLightbox('.gallery a');
 const galleryApiService = new GalleryApiService();
 const loadMoreBtn = new LoadMoreBtn({
   selector: ".load-more",
   isHidden: true,
 });
 
-form.addEventListener("submit", onSubmit);
+ref.form.addEventListener("submit", onSubmit);
 loadMoreBtn.button.addEventListener("click", fetchArticles);
 
 function onSubmit(e) {
@@ -27,10 +30,9 @@ function onSubmit(e) {
 
    galleryApiService.searchQueryPage = value;
 
-
+   loadMoreBtn.show();
    galleryApiService.resetPage();
    clearList();
-   loadMoreBtn.show();
    fetchArticles();
 
 }
@@ -39,7 +41,7 @@ function fetchArticles() {
     loadMoreBtn.show();
 
     return galleryApiService
-      .fetchGallery()
+      .getImagesy()
       .then(res => {
        notification(res);
        return res.hits
@@ -55,11 +57,11 @@ function fetchArticles() {
 function appendGallery(markup) {
     let img = '';
     img = markup.map(({webformatURL,largeImageURL,tags,likes,views,comments,downloads}) =>
-    { return `
-    div class="img-card">
-  <a href="${largeImageURL}">
-    <img src="${webformatURL}" alt="${tags}" loading="lazy" width="280" height="180"/>
-    </a>
+    { return `<a class="gallery-item" href="${largeImageURL}">
+    <div class="photo-card">
+  
+    <img class="images" src="${webformatURL}" alt="${tags}" loading="lazy" width="280" height="180"/>
+    
 <div class="info">
   <p class="info-item"> <b>Likes</b>
     <span>${likes}</span>
@@ -76,18 +78,17 @@ function appendGallery(markup) {
     <span>${downloads}</span>
   </p>
 </div>
-</div>`;
-
+</div></a>`;
     }
     ).join('');
 
 
-    gallery.insertAdjacentHTML("beforeend", markup);
-    lightbox.refresh
+    ref.gallery.insertAdjacentHTML("beforeend", img);
+    lightbox.refresh();
   }
   
   function clearList() {
-    gallery.innerHTML = "";
+    ref.gallery.innerHTML = "";
   }
 function onError(err) {
     console.log (err);
