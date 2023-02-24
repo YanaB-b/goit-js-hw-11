@@ -1,9 +1,9 @@
-import SimpleLightbox from "simplelightbox";
+import simpleLightbox from "simplelightbox";
 // Додатковий імпорт стилів
 import "simplelightbox/dist/simple-lightbox.min.css";
 import Notiflix from "notiflix";
+import GalleryApiService from "./NewsApiService";
 
-import LoadMoreBtn from "./components/loadMoreBtn";
 
 
 const ref = {
@@ -13,7 +13,7 @@ const ref = {
   
   };
    
-  const lightbox = new SimpleLightbox('.gallery a');
+  const lightbox = new simpleLightbox('.gallery a');
   const galleryApiService = new GalleryApiService();
 
   ref.form.addEventListener("submit", onSubmit);
@@ -21,10 +21,7 @@ const ref = {
   function onSubmit(e) {
     e.preventDefault();
     
-    const form = e.currentTarget;
-    const value = form.element.searchQuery.value.trim();
- 
-    galleryApiService.searchQueryPage = value;
+   galleryApiService.q = e.currentTarget.elements.searchQuery.value.trim();
  
 
     galleryApiService.resetPage();
@@ -39,7 +36,7 @@ const ref = {
        .then(res => {
         observer.observe(ref.guard);
         notification(res);
-        return res.hits
+        return res.hits;
        })
        .then(appendGallery)
        .catch(onError)
@@ -91,14 +88,22 @@ function onError(err) {
     observer.unobserve(ref.guard);
     Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
 }
-  
-
+function notification(res) {
+  if (galleryApiService.page === 2)
+Notiflix.Notify.success(`Hooray! We found ${res.totalHits} images.`);
+else if (res.hits.length < galleryApiService.perPage) {
+  observer.unobserve(ref.guard);
+  Notiflix.Notify.warning(
+    "We're sorry, but you've reached the end of search results."
+  );
+} 
+}
 const scroll = {
 root: null,
 rootHeight: '300px',
 
 };
-const clientRect = new IntersectionObserver(onScroll ,scroll);
+const observer = new IntersectionObserver(onScroll , scroll);
 
 function onScroll(elements) {
     console.log(elements);

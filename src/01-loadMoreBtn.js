@@ -1,4 +1,4 @@
-import SimpleLightbox from "simplelightbox";
+import simpleLightbox from "simplelightbox";
 // Додатковий імпорт стилів
 import "simplelightbox/dist/simple-lightbox.min.css";
 import Notiflix from "notiflix";
@@ -9,10 +9,10 @@ const ref = {
   form: document.querySelector(".search-form"),
   gallery: document.querySelector(".gallery"),
 
-} 
+}; 
  
 
-const lightbox = new SimpleLightbox('.gallery a');
+const lightbox = new simpleLightbox('.gallery a');
 const galleryApiService = new GalleryApiService();
 const loadMoreBtn = new LoadMoreBtn({
   selector: ".load-more",
@@ -25,10 +25,7 @@ loadMoreBtn.button.addEventListener("click", fetchArticles);
 function onSubmit(e) {
    e.preventDefault();
    
-   const form = e.currentTarget;
-   const value = form.element.searchQuery.value.trim();
-
-   galleryApiService.searchQueryPage = value;
+   galeryApiService.q = e.currentTarget.elements.searchQuery.value.trim();
 
    loadMoreBtn.show();
    galleryApiService.resetPage();
@@ -43,21 +40,23 @@ function fetchArticles() {
     return galleryApiService
       .getImagesy()
       .then(res => {
-       notification(res);
-       return res.hits
+        notification(res);
+     
+       return ref.hits
       })
       .then(appendGallery)
-      .catch(onError)
+      .catch(OnError)
       .finally(() => {
-        form.reset();
+        ref.form.reset();
         loadMoreBtn.enable();
 
       });
 }
 function appendGallery(markup) {
     let img = '';
-    img = markup.map(({webformatURL,largeImageURL,tags,likes,views,comments,downloads}) =>
-    { return `<a class="gallery-item" href="${largeImageURL}">
+    img = markup.map(({webformatURL, largeImageURL, tags, likes, views, comments, downloads}) =>
+    { return `
+    <a class="gallery-item" href="${largeImageURL}">
     <div class="photo-card">
   
     <img class="images" src="${webformatURL}" alt="${tags}" loading="lazy" width="280" height="180"/>
@@ -80,7 +79,8 @@ function appendGallery(markup) {
 </div>
 </div></a>`;
     }
-    ).join('');
+    )
+    .join('');
 
 
     ref.gallery.insertAdjacentHTML("beforeend", img);
@@ -90,8 +90,21 @@ function appendGallery(markup) {
   function clearList() {
     ref.gallery.innerHTML = "";
   }
-function onError(err) {
+function OnError(err) {
     console.log (err);
-    loadMoreBtn.hide();
+  
     Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+    loadMoreBtn.hide();
 }
+
+function notification(res) {
+  if (galleryApiService.page === 2)
+Notiflix.Notify.success(`Hooray! We found ${res.totalHits} images.`);
+else if (res.hits.length < galleryApiService.perPage) {
+  loadMoreBtn.hide();
+  Notiflix.Notify.warning(
+    "We're sorry, but you've reached the end of search results."
+  );
+}  
+}
+

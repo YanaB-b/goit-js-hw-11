@@ -5,7 +5,7 @@ const URL = 'https://pixabay.com/api/';
 const KEY = '33827578-bf8f715bed7d1235235f0071a';
 
 const options = {
-    parametry: {
+    params: {
         key: KEY,
         image_type:'photo',
         orientation:'horizontal',
@@ -13,15 +13,15 @@ const options = {
         page_per: 40,
 
     },
-}
+};
 export default class GalleryApiService{
-    constructor(){
+    constructor() {
         this.page = 1;
         this.q = '';
-        this.perPage = options.parametry.page_per;
+        this.perPage = options.parametry.per_page;
 
     }
-   async getImages(){
+   async getImages() {
     try {
         const response = await axios.get(
             `${URL}?q=${this.q}&page=${this.page}`,
