@@ -18,7 +18,7 @@ export default class GalleryApiService{
     constructor() {
         this.page = 1;
         this.q = '';
-        this.perPage = options.parametry.per_page;
+        this.perPage = options.params.per_page;
 
     }
    async getImages() {
