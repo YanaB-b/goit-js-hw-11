@@ -25,7 +25,7 @@ loadMoreBtn.button.addEventListener("click", fetchArticles);
 function onSubmit(e) {
    e.preventDefault();
    
-   galeryApiService.q = e.currentTarget.elements.searchQuery.value.trim();
+   galleryApiService.q = e.currentTarget.elements.searchQuery.value.trim();
 
    loadMoreBtn.show();
    galleryApiService.resetPage();
@@ -38,11 +38,11 @@ function fetchArticles() {
     loadMoreBtn.show();
 
     return galleryApiService
-      .getImagesy()
+      .getImages()
       .then(res => {
         notification(res);
      
-       return ref.hits
+       return res.hits
       })
       .then(appendGallery)
       .catch(OnError)
@@ -100,7 +100,7 @@ function OnError(err) {
 function notification(res) {
   if (galleryApiService.page === 2)
 Notiflix.Notify.success(`Hooray! We found ${res.totalHits} images.`);
-else if (res.hits.length < galleryApiService.perPage) {
+ if (res.hits.length < galleryApiService.perPage) {
   loadMoreBtn.hide();
   Notiflix.Notify.warning(
     "We're sorry, but you've reached the end of search results."

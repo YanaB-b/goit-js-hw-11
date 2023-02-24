@@ -14,11 +14,11 @@ show() {
     this.button.classList.remove('hidden');
 }
 disable() {
-    this.button.disable = true;
+    this.button.disabled = true;
     this.button.textContent = 'Loadind...';
 }
 enable() {
-    this.button.disable = false;
+    this.button.disabled = false;
     this.button.textContent = 'Load more';
 
 }

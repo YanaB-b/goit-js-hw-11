@@ -32,7 +32,7 @@ const ref = {
  function fetchArticles() {
  
      return galleryApiService
-       .getImagesy()
+       .getImages()
        .then(res => {
         observer.observe(ref.guard);
         notification(res);
@@ -100,16 +100,16 @@ else if (res.hits.length < galleryApiService.perPage) {
 }
 const scroll = {
 root: null,
-rootHeight: '300px',
+rootMargin: '300px',
 
 };
 const observer = new IntersectionObserver(onScroll , scroll);
 
-function onScroll(elements) {
-    console.log(elements);
-    enteries.forEach(element => {
-        console.log(element.isIntersecting);
-        if (element.isIntersecting) {
+function onScroll(enteries) {
+    console.log(enteries);
+    enteries.forEach(entry => {
+        console.log(entry.isIntersecting);
+        if (entry.isIntersecting) {
             fetchArticles()
         }
     });

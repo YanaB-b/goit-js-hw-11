@@ -4,8 +4,11 @@ body {
   button {
     margin: 0 auto;
     margin-top: 50px;
-    display: block;
+    
   }
+  /* a.gallery-item {
+    text-decoration: none;
+  } */
   button:disabled {
     background-color: #c1c1c1;
     cursor: not-allowed;
@@ -13,51 +16,77 @@ body {
   button.hidden {
     display: none;
   }
-  img {
+  /* img {
     display: block;
     max-width: 100%;
     height: auto;
+} */
+.gallery {
+    margin-top: 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;}
+ 
+input
+ {
+  border-radius: 15px;
+  padding: 10px 20px;
+  font-size: 30px;
 }
 
-.gallery {
-   
-    gap: 12px;
-    align-items: baseline;
-    padding: 0;
-    margin-top: 20px;
-    justify-content: center;
-    display: flex;
-    flex-wrap: wrap;
+button {
+    border-radius: 15px;
+  padding: 10px 20px;
+  font-size: 30px;
+
+  border: none;
+  background-color: rgba(233, 45, 45, 0.731);
+  color: white;
+  cursor: pointer;
 }
-.gallery-item{
+.load-more {
+    margin: 0 auto;
+    margin-top: 30px;
+    display: block;
+}
+.info {
+    width: 100%;
+    padding: 2px;}
+
+    .gallery-item{
+        background-color: #e5e3e3;
+        height: 100%;
+        display: block;
+        text-align: center;
+    border-radius: 15px;
+    text-decoration: none;
+}
+    
+    .info-item {
+        display: block;
+        margin: 5px;
+        color: black;
+       
+     
+    }
+    
+
+
+/* .gallery-item{
     height: 100%;
     display: block;
     width: calc((100% - 36px)/4);
 }
-.images{
-    height: 200px;
-    width: 100%;
-    object-fit: cover;
-}
-
-.info-item {
-    display: block;
-    margin: 0;
  
-}
 
-.info-item b {
-    display: block;
-    width: 100%;
-}
-.info {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 10px;
-    font-size: 10px;
-}
-.img-item{
+
+
+
+
+
+/* .img-item{
     height: 100%;
     display: block;
 text-decoration: none;
@@ -69,4 +98,4 @@ width: calc((100% - 36px)/4);
     width: 100%;
     object-fit: cover;
     
-}
+}   */
