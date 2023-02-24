@@ -7,10 +7,10 @@ const KEY = '33827578-bf8f715bed7d1235235f0071a';
 const options = {
     params: {
         key: KEY,
-        image_type:'photo',
-        orientation:'horizontal',
-        safesearch:'true',
-        page_per: 40,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: true,
+        per_page: 40,
 
     },
 };
